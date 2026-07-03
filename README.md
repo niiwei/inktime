@@ -3,79 +3,90 @@
 
   # InkTime Gallery
 
-  English | [简体中文](README.zh-CN.md)
+  简体中文 | [English](README.en.md)
 
-  A local-first macOS photo memory gallery that turns your own pictures into AI-written captions, printable frame cards, and rotating desktop wallpapers.
+  把本地相册里真正值得回看的照片，变成一座会自己更新的回忆画廊。
 
   [![Build](https://github.com/niiwei/inktime/actions/workflows/build.yml/badge.svg)](https://github.com/niiwei/inktime/actions/workflows/build.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-  [![macOS](https://img.shields.io/badge/macOS-Apple%20Silicon-black.svg)](#download)
-  [![Ollama](https://img.shields.io/badge/Ollama-ready-0f766e.svg)](#local-models)
+  [![macOS](https://img.shields.io/badge/macOS-Apple%20Silicon-black.svg)](#下载安装)
+  [![Ollama](https://img.shields.io/badge/Ollama-ready-0f766e.svg)](#本地模型)
 </div>
 
-## About
+![InkTime 画廊主界面](docs/images/gallery-main.png)
 
-InkTime Gallery is a personal macOS app for revisiting a large local photo library. It scans a folder, tracks every source image in SQLite, asks a local or OpenAI-compatible vision model to describe the memory value of each photo, then renders gallery cards and macOS wallpapers.
+## 为什么做它
 
-It is built for private, local-first use: your photos, generated database, rendered images, and wallpaper history stay on your machine.
+相册越堆越多，真正值得回看的照片反而沉在截图、连拍、饭菜、票据和随手保存里。等你想起整理，已经不知道从哪张开始。
 
-## Table Of Contents
+InkTime 是一个本地优先的 Mac 照片回忆助手。它扫描你指定的图片文件夹，让视觉模型帮你找出值得重新看见的瞬间，写一句克制的中文短句，生成相框图和 Mac 壁纸，并按整点自动轮换。
 
-- [Features](#features)
-- [Download](#download)
-- [Quick Start](#quick-start)
-- [Local Models](#local-models)
-- [How It Works](#how-it-works)
-- [Development](#development)
-- [Project Structure](#project-structure)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+它不要求你把私人照片上传到云相册，也不需要维护一套远程服务。照片、数据库、渲染图和壁纸历史都放在你的 Mac 上；如果你选择本地 Ollama 模型，读图过程也可以完全在本机完成。
 
-## Features
+## 它能做什么
 
-- Full-folder source inventory with per-photo states: pending, processed, skipped, failed, and processing.
-- Local Ollama support by default, with OpenAI-compatible provider settings available in config.
-- AI-generated Chinese captions, tags, memory scores, reasons, and short bottom captions.
-- Visual gallery for all sources, representative photos, AI-processed photos, and curated photos.
-- Figma-like frame layout editor for portrait, landscape, and square templates.
-- One-click rerendering without recalling the model.
-- macOS wallpaper rendering, manual wallpaper setting, and random wallpaper rotation.
-- System-level wallpaper scheduling through a macOS `LaunchAgent`.
-- Safe stop controls for long-running image processing.
-- Keyboard browsing in detail view with left/right arrows and `F` for curation.
+| 能力 | 你会得到什么 |
+| --- | --- |
+| 回忆画廊 | 扫描整个照片目录，把未处理、已处理、已跳过、失败、精选都清楚分开。 |
+| AI 读图 | 自动生成中文标题、标签、回忆度、推荐理由和底部短句。 |
+| 精选照片 | 用键盘左右切换照片，按 `F` 加入或取消精选，适合快速筛选一批回忆。 |
+| 跳过解释 | 截图、相似连拍、低价值图片不会悄悄消失，会显示为什么跳过。 |
+| 相框渲染 | 把照片做成带标题、日期和短句的相框图，适合收藏或分享。 |
+| 布局编辑 | 像调 Figma 画板一样拖拽、缩放、删除图层，保存后批量重渲染。 |
+| 壁纸轮播 | 从精选或 AI 处理后的照片里生成 Mac 壁纸，支持整点自动切换。 |
+| 本地模型 | 默认适配 Ollama，也可以切换到 OpenAI 兼容接口。 |
 
-## Download
+## 产品预览
 
-The recommended user install is a GitHub Release asset:
+### 画廊与详情
 
-- `InkTime.dmg` for ordinary macOS users.
-- Source code for developers who want to modify or build the app.
+| 精选照片画廊 | 照片详情页 |
+| --- | --- |
+| <img src="docs/images/gallery-main.png" alt="InkTime 精选照片画廊" width="420"> | <img src="docs/images/photo-detail.png" alt="InkTime 照片详情页" width="420"> |
 
-Current release target:
+### 设置与提示词
 
-- macOS on Apple Silicon.
-- Unsigned local build. The first launch may require approval in macOS security settings.
+| 模型设置 | 提示词设置 |
+| --- | --- |
+| <img src="docs/images/model-settings.png" alt="InkTime 模型设置" width="360"> | <img src="docs/images/prompt-settings.png" alt="InkTime 提示词设置" width="360"> |
 
-## Quick Start
+### 相框与壁纸
 
-For end users:
+| 相框布局编辑器 | Mac 壁纸效果 |
+| --- | --- |
+| <img src="docs/images/layout-editor.png" alt="InkTime 相框布局编辑器" width="420"> | <img src="docs/images/mac-wallpaper.png" alt="InkTime Mac 壁纸效果" width="420"> |
 
-1. Download `InkTime.dmg` from [Releases](https://github.com/niiwei/inktime/releases).
-2. Open the DMG and move `InkTime.app` into `Applications`.
-3. Start Ollama and make sure your vision model is available.
-4. Open InkTime, choose a photo folder, scan, then process selected photos.
+## 下载安装
 
-For developers:
+普通用户推荐直接下载 GitHub Release：
+
+- [下载 InkTime.dmg](https://github.com/niiwei/inktime/releases/latest)
+
+当前版本说明：
+
+- 目前主要面向 Apple Silicon Mac。
+- 当前构建未签名，首次打开时可能需要在 macOS 安全设置中手动允许运行。
+- 如果使用本地模型，需要先安装并启动 [Ollama](https://ollama.com/)。
+
+## 快速开始
+
+普通用户：
+
+1. 从 [Releases](https://github.com/niiwei/inktime/releases) 下载 `InkTime.dmg`。
+2. 打开 DMG，把 `InkTime.app` 拖进 `Applications`。
+3. 启动 Ollama，并确保本地视觉模型已经可用。
+4. 打开 InkTime，选择照片目录，先扫描，再处理选中的图片。
+
+开发者：
 
 ```bash
 npm install
 npm run electron:dev
 ```
 
-## Local Models
+## 本地模型
 
-The default config is designed for local Ollama:
+默认配置面向本地 Ollama：
 
 ```json
 {
@@ -85,118 +96,99 @@ The default config is designed for local Ollama:
 }
 ```
 
-Model input images are resized to a longest edge of 1024px before being sent to Ollama, and Ollama requests use `num_ctx=8192`.
+发送给 Ollama 的图片会先压到最长边 `1024px`，并使用 `num_ctx=8192`。如果要切换在线模型，可以参考 [.env.example](.env.example) 设置本地环境变量。不要把 `.env` 或 `.env.local` 提交到仓库。
 
-For online providers, copy [.env.example](.env.example) and set the relevant API key locally. Do not commit `.env` or `.env.local`.
+## 运行方式
 
-## How It Works
+InkTime 不是两个应用，而是同一个应用的两种运行形态：
 
-InkTime is one app with several local parts:
-
-| Layer | Path | Role |
+| 形态 | 适合谁 | 怎么理解 |
 | --- | --- | --- |
-| Desktop shell | `electron/` | Starts the macOS window, tray menu, runtime folders, and LaunchAgent management. |
-| Local API | `server/` | Owns config, SQLite, scanning, model calls, rendering, and wallpaper side effects. |
-| UI | `src/ui/` | React interface for gallery, processing, settings, curation, and layout editing. |
-| Background script | `scripts/` | Independent wallpaper script used by macOS `launchd`. |
-| Docs | `docs/` | Architecture, roadmap, visual notes, and upstream reading notes. |
+| 开发模式 | 开发者 | 前端、本地 API、Electron 分开跑，方便调试。 |
+| 打包 App | 普通用户 | 下载 `InkTime.app` 或 `InkTime.dmg`，双击启动。 |
 
-Packaged app data is stored outside the repository:
+内部结构：
+
+| 层 | 路径 | 作用 |
+| --- | --- | --- |
+| 桌面壳 | `electron/` | 启动 macOS 窗口、托盘、运行时目录、LaunchAgent 管理。 |
+| 本地 API | `server/` | 负责配置、SQLite、扫描、模型调用、渲染和壁纸副作用。 |
+| 界面 | `src/ui/` | React 画廊、设置、精选、布局编辑器。 |
+| 后台脚本 | `scripts/` | 给 macOS `launchd` 用的独立壁纸脚本。 |
+| 文档 | `docs/` | 架构、路线图、设计记录、上游阅读笔记。 |
+
+打包后的运行数据不在仓库里，而在：
 
 ```text
 ~/Library/Application Support/inktime-gallery/config/
 ~/Library/Application Support/inktime-gallery/data/
 ```
 
-The repository does not include your personal photos, runtime SQLite database, generated renders, wallpapers, logs, or local environment files.
+仓库本身不包含你的私人照片、运行时 SQLite、渲染图片、壁纸图片、日志或本地环境变量。
 
-## Wallpaper Automation
+## 自动换壁纸
 
-Automatic wallpaper rotation is handled by macOS, not by an always-running app timer.
+自动换壁纸不是靠 App 一直挂着定时器，而是由 macOS `LaunchAgent` 负责。
 
-InkTime installs or updates this LaunchAgent:
+InkTime 会安装或更新这个系统任务：
 
 ```text
 ~/Library/LaunchAgents/com.inktime.gallery.wallpaper.plist
 ```
 
-At the configured whole-hour schedule, macOS starts `scripts/set-random-wallpaper.js`. The script reads runtime config and SQLite directly, applies the wallpaper, verifies the actual macOS desktop path, and only then writes `wallpaper_history`.
+到了配置好的整点，macOS 会拉起 `scripts/set-random-wallpaper.js`。这个脚本直接读取运行时配置和 SQLite，设置壁纸后再核对当前 macOS 桌面路径，确认一致才写入 `wallpaper_history`。
 
-Sleeping Macs do not run scheduled tasks while asleep; the next scheduled trigger runs after the machine is awake.
+如果电脑正在睡眠，睡眠期间不会执行；机器醒来后，会等下一次系统触发点。
 
-## Development
-
-Run the browser-style development server:
+## 开发命令
 
 ```bash
-npm run dev
+npm run dev            # 启动浏览器式开发服务
+npm run electron:dev   # 启动 Electron 开发模式
+npm run build          # 构建前端静态资源
+npm run electron:pack  # 打包本地可运行的 macOS App
+npm run electron:dist  # 构建可分发的 DMG
 ```
 
-Run the Electron app in development mode:
-
-```bash
-npm run electron:dev
-```
-
-Build the web assets:
-
-```bash
-npm run build
-```
-
-Package a local macOS app directory:
-
-```bash
-npm run electron:pack
-```
-
-Build a distributable DMG:
-
-```bash
-npm run electron:dist
-```
-
-## Project Structure
+## 项目结构
 
 ```text
 .
-├── electron/              # Electron main process and LaunchAgent manager
-├── server/                # Embedded Express API and local processing logic
-├── scripts/               # Independent wallpaper automation script
-├── src/                   # React app and shared frontend types
-├── config/                # Default config template
-├── assets/                # App icons and tray assets
-├── public/                # Public static assets
-├── docs/                  # Architecture, roadmap, and design notes
-└── reference/InkTime/     # Read-only upstream reference material
+├── electron/              # Electron 主进程和 LaunchAgent 管理器
+├── server/                # 内嵌 Express API 与本地处理逻辑
+├── scripts/               # 独立壁纸自动化脚本
+├── src/                   # React 应用和共享前端类型
+├── config/                # 默认配置模板
+├── assets/                # 应用图标和托盘资源
+├── public/                # 静态资源
+├── docs/                  # 架构、路线图、设计说明和 README 截图
+└── reference/InkTime/     # 上游只读参考材料
 ```
 
-## Roadmap
+## 路线图
 
-- Persistent batch queue for very large photo libraries.
-- Better burst-photo grouping and representative selection.
-- More wallpaper pools and quality filters.
-- Database backup, restore, health checks, and repair actions.
-- Token and cost visibility by run, day, month, and model.
+- 大规模图片库的持久化处理队列。
+- 更好的相似照片分组和代表图选择。
+- 更丰富的壁纸池和质量筛选。
+- 数据库备份、恢复、健康检查和修复。
+- 按 run、日期、模型统计 token 和成本。
 
-See [docs/personal-roadmap.md](docs/personal-roadmap.md) for the longer version.
+详细规划见 [docs/personal-roadmap.md](docs/personal-roadmap.md)。这个文件适合继续记录产品设计和未来规划。
 
-## Contributing
+## 参与贡献
 
-Pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md), keep changes focused, and run:
+欢迎提交 PR。开始之前请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，并至少运行一次：
 
 ```bash
 npm run build
 ```
 
-before opening a PR.
+## 许可证
 
-## License
+项目使用 MIT License，详见 [LICENSE](LICENSE)。
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+## 致谢
 
-## Acknowledgments
-
-- Upstream reference: [InkTime](reference/InkTime/)
-- README structure inspired by [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
-- Markdown syntax reference: [guodongxiaren/README](https://github.com/guodongxiaren/README)
+- 上游参考项目：[InkTime](reference/InkTime/)
+- README 结构参考：[Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+- Markdown 语法整理参考：[guodongxiaren/README](https://github.com/guodongxiaren/README)
